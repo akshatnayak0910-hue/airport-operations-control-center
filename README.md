@@ -1,6 +1,6 @@
 # ?? DEL AOCC — Airport Operations Control Center
 
-> **Frontend Wars 2026 — Grand Finale Submission**
+> **Frontend Wars 2026 — Grand Finale Ultimate Submission**
 > *Airport Operations Control Center | Critical Systems & Real-Time Operations*
 
 A production-quality, real-time Airport Operations Control Center built entirely on the frontend for **Indira Gandhi International Airport (DEL)**. Transforms the provided multi-table airport dataset into a unified, interactive operational interface simulating a live control room environment.
@@ -16,6 +16,7 @@ A production-quality, real-time Airport Operations Control Center built entirely
 | Styling | Tailwind CSS v4 (`@tailwindcss/vite`) |
 | Icons | Lucide React |
 | Data | Static CSV files parsed via custom browser parser |
+| Search | Browser-native cross-entity indexing (Ctrl+K) |
 | Fonts | Inter + JetBrains Mono (Google Fonts) |
 
 **No backend. No external database. No pre-built templates. 100% original work.**
@@ -54,7 +55,7 @@ npm run build
 
 ---
 
-## ??? 9 Operational Modules
+## ??? 11 Operational Modules
 
 - **Dashboard**: KPI cards, live alert log, flight status mix bar, airline delay bar chart
 - **Flights Board**: search, filter, column sorting, detail drawer, AOCC override panel
@@ -65,6 +66,9 @@ npm run build
 - **Retail & Revenue**: revenue KPIs, category bar chart, outlet leaderboard, payment mode split
 - **Terminal Radar Map**: interactive SVG airside blueprint, runway vectors, gate telemetry
 - **Emergency SOP**: Code Blue / Red / Amber / Hazmat emergency protocol execution with audit trail
+- **Turnaround Gantt**: ground process timeline (deboarding, fueling, catering, security sweep, boarding)
+- **Analytics Deck**: On-Time Performance (OTP %) gauge, delay root-cause analysis, wait time indices
+- **Global Search (Ctrl+K)**: Instant cross-dataset search by PNR, Passport #, Flight ID, Staff ID, or Workorder
 
 ---
 
@@ -84,7 +88,7 @@ airport-control-center/
 ¦       +-- retail_transactions.csv
 +-- src/
 ¦   +-- types.ts                   ? Data interfaces
-¦   +-- App.tsx                    ? Main router & simulation engine (9 tabs)
+¦   +-- App.tsx                    ? Main router & simulation engine (11 tabs)
 ¦   +-- App.css
 ¦   +-- index.css
 ¦   +-- main.tsx
@@ -102,6 +106,9 @@ airport-control-center/
 ¦       +-- RetailAnalytics.tsx     ? Revenue KPIs + category/outlet breakdown
 ¦       +-- AirportTerminalMap.tsx  ? SVG Terminal 3 airside blueprint
 ¦       +-- EmergencyDeck.tsx       ? Emergency SOP crisis response deck
+¦       +-- TurnaroundGantt.tsx     ? Ground process Gantt timeline
+¦       +-- AirportAnalyticsDeck.tsx? OTP gauge & delay root-cause charts
+¦       +-- GlobalSearchModal.tsx   ? Global Ctrl+K search modal
 +-- index.html
 +-- vite.config.ts
 +-- tsconfig.json

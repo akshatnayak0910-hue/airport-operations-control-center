@@ -20,12 +20,16 @@ import { PassengerIntelligence } from './components/PassengerIntelligence';
 import { RetailAnalytics } from './components/RetailAnalytics';
 import { AirportTerminalMap } from './components/AirportTerminalMap';
 import { EmergencyDeck } from './components/EmergencyDeck';
+import { TurnaroundGantt } from './components/TurnaroundGantt';
+import { AirportAnalyticsDeck } from './components/AirportAnalyticsDeck';
+import { GlobalSearchModal } from './components/GlobalSearchModal';
 import { exportIncidentLogsCSV, exportFlightManifestJSON } from './utils/logExporter';
-import { LayoutDashboard, Plane, LayoutGrid, Shield, Wrench, ShieldAlert, Users, ShoppingCart, Compass, Download } from 'lucide-react';
+import { LayoutDashboard, Plane, LayoutGrid, Shield, Wrench, ShieldAlert, Users, ShoppingCart, Compass, Download, RefreshCcw, BarChart3, Search } from 'lucide-react';
 import './App.css';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Raw dataset states
   const [flightsRaw, setFlightsRaw] = useState<Flight[]>([]);
@@ -109,6 +113,18 @@ function App() {
     };
 
     loadAllData();
+  }, []);
+
+  // Keyboard shortcut listener for Ctrl+K / Cmd+K global search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Simulation Clock Tick effect
@@ -331,10 +347,32 @@ function App() {
           >
             <ShieldAlert className="w-3.5 h-3.5" /> Emergency SOP
           </button>
+          <button
+            onClick={() => setActiveTab('turnaround')}
+            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+              activeTab === 'turnaround' ? 'bg-slate-800 text-cyan-400 font-bold' : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <RefreshCcw className="w-3.5 h-3.5" /> Turnaround Gantt
+          </button>
+          <button
+            onClick={() => setActiveTab('analytics')}
+            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+              activeTab === 'analytics' ? 'bg-slate-800 text-cyan-400 font-bold' : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <BarChart3 className="w-3.5 h-3.5" /> Analytics
+          </button>
         </nav>
 
-        {/* Log Export Buttons */}
+        {/* Global Search & Log Export Buttons */}
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="flex items-center gap-2 px-3 py-1.5 text-xs font-mono font-semibold rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 transition-all"
+          >
+            <Search className="w-3.5 h-3.5" /> Quick Search <kbd className="px-1.5 py-0.5 text-[9px] bg-slate-900 text-slate-400 rounded border border-slate-700">Ctrl+K</kbd>
+          </button>
           <button
             onClick={() => exportIncidentLogsCSV(alerts, flights)}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-semibold rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700/60"
@@ -428,7 +466,34 @@ function App() {
             onTriggerAlert={handleTriggerAlert}
           />
         )}
+        {activeTab === 'turnaround' && (
+          <TurnaroundGantt
+            flights={flights}
+          />
+        )}
+        {activeTab === 'analytics' && (
+          <AirportAnalyticsDeck
+            flights={flights}
+            passengers={passengersRaw}
+            security={securityRaw}
+            baggage={baggageRaw}
+          />
+        )}
       </main>
+
+      {/* Global Search Modal */}
+      <GlobalSearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        flights={flights}
+        passengers={passengersRaw}
+        baggage={baggageRaw}
+        security={securityRaw}
+        shifts={staffShiftsRaw}
+        maintenance={maintenanceRaw}
+        retail={retailRaw}
+        onNavigateTab={setActiveTab}
+      />
 
     </div>
   );
