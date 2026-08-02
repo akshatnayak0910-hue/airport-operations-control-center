@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #020617;
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+/* Custom Scrollbar for dark operations center */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Telemetry typography */
+.tracking-mono {
+  letter-spacing: -0.05em;
+}
+
+.text-xxs {
+  font-size: 0.65rem;
+}
+
+.text-xxs {
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+}
+
+/* Custom glow effects for alerts */
+.shadow-glow-cyan {
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+}
+
+.shadow-glow-amber {
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);
+}
+
+.shadow-glow-rose {
+  box-shadow: 0 0 15px rgba(244, 63, 94, 0.15);
+}
+
